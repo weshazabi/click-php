@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="#">
+    <meta charset="utf-8">
+    <title>SMS Bulk Send</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="dark.css" class="src">
+</head>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+
+    <symbol id="icon-arrow-right" viewBox="0 0 32 32">
+        <path d="M19.414 27.414l10-10c0.781-0.781 0.781-2.047 0-2.828l-10-10c-0.781-0.781-2.047-0.781-2.828 0s-0.781 2.047 0 2.828l6.586 6.586h-19.172c-1.105 0-2 0.895-2 2s0.895 2 2 2h19.172l-6.586 6.586c-0.39 0.39-0.586 0.902-0.586 1.414s0.195 1.024 0.586 1.414c0.781 0.781 2.047 0.781 2.828 0z"></path>
+    </symbol>
+
+    <symbol id="icon-spinner" viewBox="0 0 32 32">
+        <path d="M12 4c0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.209-1.791 4-4 4s-4-1.791-4-4zM20.485 7.515c0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.209-1.791 4-4 4s-4-1.791-4-4zM26 16c0-1.105 0.895-2 2-2s2 0.895 2 2c0 1.105-0.895 2-2 2s-2-0.895-2-2zM22.485 24.485c0-1.105 0.895-2 2-2s2 0.895 2 2c0 1.105-0.895 2-2 2s-2-0.895-2-2zM14 28c0 0 0 0 0 0 0-1.105 0.895-2 2-2s2 0.895 2 2c0 0 0 0 0 0 0 1.105-0.895 2-2 2s-2-0.895-2-2zM5.515 24.485c0 0 0 0 0 0 0-1.105 0.895-2 2-2s2 0.895 2 2c0 0 0 0 0 0 0 1.105-0.895 2-2 2s-2-0.895-2-2zM4.515 7.515c0 0 0 0 0 0 0-1.657 1.343-3 3-3s3 1.343 3 3c0 0 0 0 0 0 0 1.657-1.343 3-3 3s-3-1.343-3-3zM1.75 16c0-1.243 1.007-2.25 2.25-2.25s2.25 1.007 2.25 2.25c0 1.243-1.007 2.25-2.25 2.25s-2.25-1.007-2.25-2.25z"></path>
+    </symbol>
+
+</svg>
+
+
+<body data-theme="dark">
+
+    <div class="col-10 mx-auto py-md-3">
+        <header class="pb-3 border-bottom mb-2 text-center">
+            <a href="#" class="text-dark text-decoration-none">
+                <span class="fs-4 mb-3">SMS Bulk Messenger</span>
+            </a>
+        </header>
+        <h5 class="my-3">Config:</h5>
+        <div class="panel rounded bg-light mb-5 p-3">
+            <form class="api-data" action="#">
+                <h6 class="ps-0">Add New Key: </h6>
+                <div class="row">
+                    <div class="col-2">
+                        <select id="site-select" class="form-select form-select-sm" aria-label="Default select example">
+                            <option disabled>Choose API</option>
+                            <option value="infobip">Infobip</option>
+                            <option value="clickatell" >Clickatell</option>
+                            <option value="twilio" disabled>Twilio</option>
+                            <option value="plivo" selected>Plivo</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <div class="input-group">
+                            <label for="api-1" class="form-label col-form-label col-form-label-sm me-2">Api Key:</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Enter Api Key" aria-describedby="button-addon2" name="api">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input-group">
+                            <label for="url-1" class="form-label col-form-label col-form-label-sm me-2">Url:</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Enter Url" aria-describedby="button-addon2" name="url">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-sm btn-primary" type="submit">
+                            <svg class="icon icon-spinner spin" style="display:none">
+                                <use href="#icon-spinner"></use>
+                            </svg>
+                            <span>Save</span>
+                        </button>
+                    </div>
+                    <div class="row mt-3 mx-auto">
+                        <h6 class="ps-0">Stored Keys: <small class="fs-7"><i>(2 keys in localStorage)</i></small></h6>
+                        <p class="mb-0"></p>
+                        <table class="table table-bordered table-striped mx-auto" style="width:100%;font-size: 0.8rem;">
+                            <thead>
+                                <tr>
+                                    <th>Select</th>
+                                    <th>Site</th>
+                                    <th>Api Key</th>
+                                    <th>Balance</th>
+                                    <th>Url</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="showKeys"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="row mt-3 mx-auto">
+                        <div class="col-6">
+                            <h6 class="ps-0">API to use: </h6>
+                            <div class="col-full ps-0" id="load-checkboxes">
+                                <!-- <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions1" id="inlineRadio3" value="byone" disabled>
+                                <label class="form-check-label" for="inlineRadio3" disabled>All</label>
+                            </div> -->
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <h6 class="ps-0">Send as: </h6>
+                            <div class="col-full ps-0">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio4" value="bulk" checked>
+                                    <label class="form-check-label" for="inlineRadio4">Bulk SMS</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio5" value="byone" disabled>
+                                    <label class="form-check-label" for="inlineRadio5">Single SMS (disabled)</label>
+                                </div>
+                                <br>
+                                <small><i><b>[Bulk: </b>Send one API request. <b>Single: </b>Keep sending one by one.]</i></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5" style="border-right: 1px solid #505050;">
+                <h5 class="mb-3">Message:</h5>
+                <div class="panel rounded bg-light p-3">
+                    <form action="#" method="post" id="messageForm">
+                        <div class="row mb-3">
+                            <div class="col form-group">
+                                <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
+                                <input class="form-control" type="text" name='from' placeholder="Sender Name" value="Info" />
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col form-group">
+                                <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
+                                <textarea class="form-control" type="text" id="msg" name='msg' placeholder="Message" style="height:145px;"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col form-group">
+                                <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
+                                <textarea class="form-control" type="text" name='to' placeholder="Number list" style="height:230px;"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col form-group">
+                                <button type="submit" class="btn btn-success btn-block">Send <span class="spinner" hidden></span></button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="col-md-7">
+                <h5 class="mb-3">Result:</h5>
+                <div class="panel rounded bg-light p-3">
+                    <small>Realtime Results will load here...</small>
+                    <div id="output"></div>
+                </div>
+                <h5 class="mt-4">Logs for:
+                    <span class="ms-2" id="logs-for"></span>
+                    <span><button id="reload-logs" class="btn btn-sm btn-warning ms-2">Reload <span class="spinner" hidden></span></button></span>
+                </h5>
+                <div class="panel rounded bg-light p-3">
+                    <small>Click reload to show logs...</small>
+                    <table class="table table-bordered table-striped mx-auto mt-2" style="width:100%;font-size: 0.8rem;">
+                        <thead>
+                            <tr>
+                                <th>Sent</th>
+                                <th>Status</th>
+                                <th>to</th>
+                                <th>Message</th>
+                            </tr>
+                        </thead>
+                        <tbody id="showLogs"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <footer class="pt-3 my-4 text-muted border-top mx-auto">
+            <h6></i> <b>Copyright @lwind01</b></h6>
+        </footer>
+    </div>
+
+    <!-- <script src="/docs/5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script> -->
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+
+            let messageForm = document.querySelector("#messageForm");
+            let output = document.querySelector("#output");
+            let apiData = document.querySelector(".api-data");
+            let showKeys = document.querySelector("#showKeys");
+            let showLogs = document.querySelector("#showLogs");
+            let reloadButton = document.querySelector("#reload-logs");
+            let logsFor = document.querySelector("#logs-for");
+            let loadCheckboxes = document.querySelector("#load-checkboxes");
+            window.localStorage.removeItem('messageResult');
+            // Storage
+            const keysArray = [{
+                id: 1,
+                site: 'infobip',
+                key: '8a4c39102a86aa21efd6f1f651e6425f-0ebdab71-2d04-4261-bdbd-9c47b29c466e',
+                balance: '-',
+                url: 'https://ejdll1.api.infobip.com',
+                checked: true,
+            }, {
+                id: 2,
+                site: 'infobip',
+                key: 'fb47b66c94827cb72089ad202a0e2500-13e1c587-502f-4dae-849a-914b3b6b1e9a',
+                balance: '-',
+                url: 'https://wp9egr.api.infobip.com',
+                checked: false,
+            }, {
+                id: 3,
+                site: 'clickatell',
+                key: 'RV8-4_K2QSKo5yvvZgQJyQ==', //client
+                balance: '-',
+                url: 'https://platform.clickatell.com',
+                checked: false,
+            }];
+
+            getBalance = (url, apikey, site) => {
+                //return 0;
+                if(site == 'clickatell'){
+                    fetch(`${url}/public-client/balance`, {
+                        method: 'GET',
+                        headers: {
+                            "Authorization": apikey,
+                            "Accept": "application/json"
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.balance) {
+                            return `${data.currency} ${data.balance}`;
+                        } else {
+                            return `${data.requestError.serviceException.messageId.toLowerCase()}`;
+                        };
+                    }).then(data => {
+                        document.querySelectorAll(`td[data-key="${apikey}"]`).forEach(el => el.innerHTML = `${data}`)
+                    });
+                }
+                else if(site == 'clickatell'){
+                    fetch(`${url}/account/1/total-balance`, {
+                        method: 'GET',
+                        headers: {
+                            "Authorization": "App " + apikey,
+                            "Accept": "application/json"
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.balance) {
+                            return `${data.currency.symbol}${data.balance}`;
+                        } else {
+                            return `${data.requestError.serviceException.messageId.toLowerCase()}`;
+                        };
+                    }).then(data => {
+                        document.querySelectorAll(`td[data-key="${apikey}"]`).forEach(el => el.innerHTML = `${data}`)
+                    });
+                }else{
+                    return 0;
+                }
+            };
+
+            getKeys = () => {
+                let storedKeys = window.localStorage.getItem('apikeys');
+                if (storedKeys && storedKeys !== '' && storedKeys !== "[]") {
+                    return JSON.parse(storedKeys);
+                } else {
+                    console.log('storedKeys: NOT FOUND! Added Dedault keys instead');
+                    console.log('Keysarray: ', keysArray);
+                    window.localStorage.removeItem('apikeys');
+                    window.localStorage.setItem('apikeys', JSON.stringify(keysArray));
+                    return JSON.parse(storedKeys);
+                }
+            }
+
+            getMessageResult = () => {
+                let storedKeys = window.localStorage.getItem('messageResult');
+                console.log(JSON.parse(storedKeys));
+                if (storedKeys && storedKeys !== '' && storedKeys !== "[]") {
+                    return JSON.parse(storedKeys);
+                }
+            }
+            
+            setKey = (key) => {
+                let apikeys = [...getKeys(), key]
+                window.localStorage.removeItem('apikeys');
+                window.localStorage.setItem('apikeys', JSON.stringify(apikeys));
+                displayKeys();
+            }
+
+            removeKey = (id) => {
+                const apikeys = [...getKeys()].filter(element => element.id != id)
+                window.localStorage.removeItem('apikeys');
+                window.localStorage.setItem('apikeys', JSON.stringify(apikeys));
+                console.log('removed: ', apikeys)
+                displayKeys();
+            }
+
+            editKey = (id, keychange, valuechange) => {
+                let apikeys = [...getKeys()].map(element => {
+                    if (element.id == id) {
+                        // console.log(element)
+                        element[keychange] = true;
+                        // console.log(element)
+                    } else {
+                        element[keychange] = false;
+                    }
+                    return element
+                });
+                window.localStorage.removeItem('apikeys');
+                window.localStorage.setItem('apikeys', JSON.stringify(apikeys));
+                // console.log('edited: ', apikeys)
+                displayKeys();
+            };
+
+            /**
+             * Display stored apikeys in LocalStorage to a table
+             * @param {function}
+             * @returns {void}
+             */
+            displayKeys = () => {
+                let apikeysString = '';
+                let checkboxesString = '';
+                let selectedApi;
+                // console.log('getkeys: ', getKeys())
+                getKeys().forEach((api, index) => {
+                    // console.log('api: ', api)
+                    if (api.checked) {
+                        selectedApi = api.id
+                    };
+                    apikeysString += `<tr class="${(api.checked) ? 'checked' : ''}">
+                    <td>Api ${index + 1}</td>
+                    <td>${api.site.toUpperCase()}</td>
+                    <td>${api.key}</td>
+                    <td data-key="${api.key}" data-url="${api.url}">${getBalance(api.url, api.key, api.site)}</td>
+                    <td>${api.url}</td>
+                    <td><span><a href="#" data-key="${api.key}" data-id="${api.id}" class="delete-key">Delete</a></span></td>
+                </tr>`;
+                    checkboxesString += `<div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions3" id="inlineRadio${index + 1}" value="${api.id}" ${(api.checked) ? 'checked' : ''}>
+                                <label class="form-check-label" for="inlineRadio${index + 1}">Api ${index + 1}</label>
+                            </div>
+                `;
+                })
+                showKeys.innerHTML = apikeysString;
+                loadCheckboxes.innerHTML = checkboxesString;
+                logsFor.innerHTML = `Api ${selectedApi}`;
+            };
+
+            displayKeys() // Display Available Keys on PageLoad
+
+            /**
+             * Add an API Key to LocalStorage
+             * @param {event}
+             * @returns {void}
+             */
+            apiData.addEventListener("submit", function (e) {
+                e.preventDefault();
+                let getSite = this.elements['site-select'].value;
+                let getKey = this.elements['api'].value;
+                let getUrl = this.elements['url'].value;
+                console.log(this.elements)
+                if (getKey !== '' && getUrl !== '') {
+                    setKey({
+                        id: getKeys().length + 1,
+                        site: getSite,
+                        key: getKey,
+                        balance: '-',
+                        url: getUrl,
+                        checked: false,
+                    })
+                    // apiData.elements['site-select'].value = 'Infobip';
+                    apiData.elements['api'].value = '';
+                    apiData.elements['url'].value = '';
+                }
+            });
+
+            // checkboxes
+            loadCheckboxes.addEventListener('click', function (event) {
+                event.preventDefault();
+                if (event.target.classList.contains('form-check-input')) {
+                    // console.log('cliked: ', event.target.value);
+                    editKey(event.target.value, 'checked')
+                } else {
+                    return;
+                }
+            })
+
+            // getSelectedApi = () => {
+            //     document.querySelectorAll("#load-checkboxes .form-check-input").forEach(el => {
+            //         // console.log('getSelected: ', el.hasAttribute('checked'))
+            //         if (el.hasAttribute('checked')) {
+            //             console.log('Selectd Api:', el.value)
+            //             return parseInt(el.value);
+            //         }
+            //     })
+            // };
+            // getSelectedApi();
+
+            /**
+             * Delete an API Key from LocalStorage
+             * @param {event}
+             * @returns {void}
+             */
+            showKeys.addEventListener("click", function (e) {
+                e.preventDefault();
+                if (event.target.classList.contains('delete-key')) {
+                    console.log('givenid: ', event.target.getAttribute("data-id"))
+                    removeKey(event.target.getAttribute("data-id"))
+                } else {
+                    return;
+                }
+            });
+
+            /**
+             * Reload Logs
+             * @param {object} event
+             * @param {number} id of API key 
+             * @return void
+             */
+            reloadButton.addEventListener("click", function (event) {
+                event.preventDefault();
+
+                // Loading
+                const spinner = this.querySelector(".spinner");
+                spinner.removeAttribute('hidden');
+                let selected = document.querySelector('#load-checkboxes input[name="inlineRadioOptions3"]:checked').value;
+                var api_drp = getKeys()[selected - 1].site;
+                //alert(api_drp);
+                let logsString = '';
+                if(api_drp == 'clickatell')
+                {
+                    //alert('clickatell called');
+                    
+                    if(getMessageResult() != null){
+                        
+                        showLogs.innerHTML = '<tfoot><td colspan="4">Loading...<td></tfoot>';
+                        getMessageResult().forEach((message, index) => {
+                            console.log(message);
+                            (async () => {
+                                const rawResponse = await fetch(`${getKeys()[selected - 1].url}/public-client/message/status?messageId=${message.apiMessageId}`, {
+                                    method: 'GET',
+                                    headers: {
+                                        "Authorization": getKeys()[selected - 1].key,
+                                        "Accept": "application/json"
+                                    },
+                                });
+
+                                // Loaded
+                                const response = await rawResponse.json();
+                                console.log(response);
+
+                                logsString += `<tr>
+                                    <td>${new Date().toLocaleString("en-US")}</td>
+                                    <td>${response.status}</td>
+                                    <td>${message.to}</td>
+                                    <td>${document.querySelector('#msg').value}</td>
+                                </tr>`;
+                                showLogs.innerHTML = logsString;
+                            })();
+                    
+                        });
+                    }
+                    console.log(logsString);
+                }
+                else{
+                    
+                    showLogs.innerHTML = '<tfoot><td colspan="4">Loading...<td></tfoot>';
+                    (async () => {
+                        let selected = document.querySelector('#load-checkboxes input[name="inlineRadioOptions3"]:checked').value;
+                        const rawResponse = await fetch(`${getKeys()[selected - 1].url}/sms/1/logs`, {
+                            method: 'GET',
+                            headers: {
+                                "Authorization": "App " + getKeys()[selected - 1].key,
+                                "Accept": "application/json"
+                            },
+                        });
+
+                        // Loaded
+                        const response = await rawResponse.json();
+                        spinner.setAttribute('hidden', '');
+                        let logsString = '';
+
+                        if (typeof response.results !== 'undefined') {
+                            response.results.forEach(log => {
+                                logsString += `<tr>
+                                <td>${new Date(log.sentAt).toLocaleString("en-US")}</td>
+                                <td>${log.status.name}</td>
+                                <td>${log.to}</td>
+                                <td>${log.text}</td>
+                            </tr>`
+                            })
+                        } else {
+                            logsString = '<tfoot><td colspan="4">Error<td></tfoot>';
+                        }
+
+                        showLogs.innerHTML = logsString;
+                    })();
+                }
+                
+                spinner.setAttribute('hidden', '');
+            })
+
+
+            /** Send Message
+             * @param {object} event
+             * @param {object} FormData Object
+             * @param {string} url
+             * @param {string} apikey
+             * @returns {Promise<string>} API response from server
+             */
+            messageForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                const spinner = this.querySelector(".spinner");
+                spinner.removeAttribute('hidden');
+                let messageData = new FormData(messageForm);
+                let selected = document.querySelector('#load-checkboxes input[name="inlineRadioOptions3"]:checked').value;
+                let site_selected = document.querySelector('#site-select :checked').value;
+
+                messageData.append('selectedapi', selected);
+                messageData.append('site_select', getKeys()[selected - 1].site);
+                messageData.append('apikey', getKeys()[selected - 1].key);
+                messageData.append('url', getKeys()[selected - 1].url);
+
+                // let destinations = messageForm.elements['to'].value;
+                // console.log('destinations: ', destinations)
+                // const array2 = destinations.split("\n");
+                // console.log(typeof array2);
+
+                for (var pair of messageData.entries()) {
+                    console.log(pair);
+                }
+
+                fetch('process.php', {
+                    method: 'POST',
+                    body: messageData,
+                }).then((res) => res.json())
+                    .then((data) => {
+                        output.innerHTML = data.html;
+                        if(data.api_response.error == null){
+                            window.localStorage.removeItem('messageResult');
+                            window.localStorage.setItem('messageResult', JSON.stringify(data.api_response.messages));
+                        }
+                        spinner.setAttribute('hidden', '');
+                        //console.log(data)
+                    })
+                    .catch((error) => console.log(error));
+
+            })
+
+        }, false);
+    </script>
+</body>
+
+</html>
